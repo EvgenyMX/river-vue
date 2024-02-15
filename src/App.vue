@@ -1,15 +1,26 @@
 <script setup>
   import RiverPosts from './components/RiverPosts.vue'
   import SortingTabs from './components/SortingTabs.vue'
-  import { ref } from 'vue'
+  import FormNewRive from './components/FormNewRive.vue'
+  import { reactive, computed, onMounted, ref } from 'vue'
+  import axios from 'axios';
 
   let sort = ref('ASC')
+  let mode = ref('view')
+
+  const river = reactive({
+    sort: 'ASC',
+    mode: 'view',
+    posts: [],
+    filterYearPosts: [],
+  })
+
 
   const sortButton = [
     {
       'key': 0,
       'sort': 'ASC',
-      'class': 'sorting--active',
+      'class': '',
       'name': 'Сначала новые',
       'click': ''
     },
@@ -22,10 +33,30 @@
     }
   ]
 
+  onMounted(() => {
+    getPosts()// <div>
+  })
 
+
+  const getPosts = () => {
+    axios.get('https://me-dev.test.nasledie.digital/wp-json/ndriver/v1/river/get')
+      .then( resp => {
+          if ( resp.status != 200 ) {
+              console.log(`Error Code: ${resp.status}`);
+          }
+          river.posts = resp.data;
+      })
+      .catch( error => {
+          console.log('Error', error);
+          return [];
+      })
+  }
 
   const sortValue = ( s ) => {
-    return sort = s;
+    return river.sort = s;
+  }
+  const stateMode = () => {
+    return river.mode == 'view' ? river.mode = 'edit' : river.mode = 'view';
   }
 </script>
 <template>
@@ -42,17 +73,22 @@
       </div>
       <div class="river-buttons">
         <button>C</button>
-        <button>Edit</button>
+        <button @click="stateMode" v-if="river.mode == 'view'"> Edit </button>
+        <button @click="stateMode" v-else> Save </button>
       </div>
     </header>
 
     <div class="river-sorting">
-      <button v-for="btn in sortButton" :key='btn.key' @click="sort=btn.sort" :class="btn.class">{{btn.name}}</button>
+      <button v-for="btn in sortButton" :key='btn.key' @click="river.sort=btn.sort" :class="{'sorting--active': btn.sort == river.sort}">{{btn.name}}</button>
+    </div>
+
+    <div class="river-new" v-if="river.mode == 'edit'">
+      <FormNewRive />
     </div>
     <div class="river-posts">
       <div class="river-vertical-line"></div>
       <div class="river-items">
-        <RiverPosts :sort='sort'/>
+        <RiverPosts :posts="river.posts" :sort='river.sort' :mode="river.mode"/>
       </div>
     </div>
 
