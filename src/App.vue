@@ -12,7 +12,6 @@
     sort: 'ASC',
     mode: 'view',
     posts: [],
-    filterYearPosts: [],
   })
 
 
@@ -58,6 +57,9 @@
   const stateMode = () => {
     return river.mode == 'view' ? river.mode = 'edit' : river.mode = 'view';
   }
+
+  const defaultImage = 'https://me-dev.test.nasledie.digital/wp-content/themes/nasldnew/assets/img/river-img.png';
+
 </script>
 <template>
   <div class="river-content">
@@ -83,7 +85,7 @@
     </div>
 
     <div class="river-new" v-if="river.mode == 'edit'">
-      <FormNewRive />
+      <FormNewRive :defaultImage="defaultImage" :posts="river.posts"/>
     </div>
     <div class="river-posts">
       <div class="river-vertical-line"></div>
