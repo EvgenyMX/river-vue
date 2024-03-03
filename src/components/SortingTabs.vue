@@ -15,8 +15,10 @@ export default {
 </script>
 
 <template>
-    <button @click="changeSort('ASC')" data-sort="ASC" class="sorting--active">Сначала новые</button>
-    <button @click="changeSort('DESC')" data-sort="DESC" >Сначала старые</button>
+    <div class="">
+        <button @click="changeSort('ASC')" data-sort="ASC" class="sorting--active">Сначала новые</button>
+        <button @click="changeSort('DESC')" data-sort="DESC" >Сначала старые</button>
+    </div>
 </template>
 
 <style scoped>

@@ -5,6 +5,7 @@
   import { reactive, computed, onMounted, ref } from 'vue'
   import axios from 'axios';
 
+
   let sort = ref('ASC')
   let mode = ref('view')
 
@@ -13,8 +14,6 @@
     mode: 'view',
     posts: [],
   })
-
-
   const sortButton = [
     {
       'key': 0,
@@ -97,7 +96,7 @@
   </div>
 </template>
 
-<style scoped>
+<style>
 
 
 .river-content {
@@ -220,4 +219,3 @@
 
 
 </style>
-..

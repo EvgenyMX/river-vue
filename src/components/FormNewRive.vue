@@ -8,31 +8,62 @@
     history: false,
     text: null,
     preview: null,
-
   })
-  const props = defineProps(['defaultImage', 'posts'])
+  const props = defineProps({
+    defaultImage: String,
+    posts: String,
+  })
 
   const addRiverPost = () => {
-    // console.log( riverForm );
-    props.posts.append(riverForm)
+    axios.post('https://me-dev.test.nasledie.digital/wp-json/ndriver/v1/river/add',
+              riverForm,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data"
+                }
+              }
+              )
+      .then( resp => {
+        console.log( 'DATA' );
+        console.log( resp.data );
+        props.posts.push( resp.data );
+        console.log( props.posts );
 
+        // props.posts.push({
+        //   'ID': '0000',
+        //   'image': {
+        //     'large': '',
+        //   },
+        //   'post_type': "river",
+        //   'postmeta': {
+        //     'creation_date': ['1706193351'],
+        //     'history': ['0'],
+        //     'photo_text': [''],
+        //     'photo_text_below': [''],
+        //     'position':['1'],
+        //     'year': ['1107'],
+        //   }
+        // })
+      })
+      .catch( error => {
+        // props.posts.push({
+        //   'ID': '0000',
+        //   'image': {
+        //     'large': '',
+        //   },
+        //   'post_type': "river",
+        //   'postmeta': {
+        //     'creation_date': ['1706193351'],
+        //     'history': ['0'],
+        //     'photo_text': [''],
+        //     'photo_text_below': [''],
+        //     'position':['1'],
+        //     'year': ['1107'],
+        //   }
+        // })
+      })
 
-    // axios.post('https://me-dev.test.nasledie.digital/wp-json/ndriver/v1/river/add',
-    //           riverForm,
-    //           {
-    //             headers: {
-    //               "Content-Type": "multipart/form-data"
-    //             }
-    //           }
-    //           )
-    //   .then( resp => {
-
-    //   })
-    //   .catch( error => {
-    //     console.log( error );
-    //   })
-
-    console.log( props.posts );
+    // console.log( props.posts );
 
   }
 
@@ -53,9 +84,9 @@
     const [file] = e.target.files
     riverForm.preview = file
   }
-  watch( riverForm, () => {
-    console.log( riverForm.preview );
-  } )
+  // watch( riverForm, () => {
+  //   console.log( riverForm.preview );
+  // } )
 
 </script>
 
@@ -72,11 +103,6 @@
           <div class="river-item__image">
             <img class="img-preview" :src=" !riverForm.preview ? defaultImage : previewFilePath" alt="">
           </div>
-
-
-
-
-
         </div>
 
 
@@ -103,20 +129,13 @@
       <div class="river-item__right">
         <div class="river-item__text" contenteditable="true">
           Опишите событие
-            <!-- <textarea
-              type="text"
-              name="river-text"
-              id="new-river-text"
-              v-model="riverForm.text"
-              placeholder="Опишите событие"
-              ></textarea> -->
         </div>
       </div>
       <div class="river-item__bottom">
         <input class="river-item__submit"  type="submit" value="Добавить">
       </div>
     </form>
-    </div>
+  </div>
 </template>
 
 <style scoped>
