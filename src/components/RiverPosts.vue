@@ -40,7 +40,14 @@ const removePost = ( post_id, index ) => {
 }
 
 
-
+const quillEditorOptions = {
+    modules: {
+        toolbar: ['bold', 'italic', 'underline']
+    },
+    placeholder: 'Compose an epic...',
+    readOnly: true,
+    theme: 'snow'
+}
 </script>
 <template>
         <!-- {{posts}} -->

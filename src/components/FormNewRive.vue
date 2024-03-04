@@ -5,7 +5,7 @@
   // import customQuillModule from 'customQuillModule'
   const riverForm = reactive({
     year: null,
-    history: false,
+    history: 0,
     text: null,
     preview: null,
   })
@@ -15,6 +15,7 @@
   })
 
   const addRiverPost = () => {
+    console.log( riverForm );
     axios.post('https://me-dev.test.nasledie.digital/wp-json/ndriver/v1/river/add',
               riverForm,
               {
@@ -87,6 +88,11 @@
   // watch( riverForm, () => {
   //   console.log( riverForm.preview );
   // } )
+const quillEditorOptions = {
+    placeholder: 'Опишите событие',
+}
+
+
 
 </script>
 
@@ -128,7 +134,12 @@
       </div>
       <div class="river-item__right">
         <div class="river-item__text" contenteditable="true">
-          Опишите событие
+          <QuillEditor
+            theme="snow"
+            :options="quillEditorOptions"
+            v-model="riverForm.text" content-type="html"
+
+          />
         </div>
       </div>
       <div class="river-item__bottom">
